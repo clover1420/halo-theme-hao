@@ -1,7 +1,17 @@
+// 复制页面
+const rm = {
+    copyPageUrl: function() {
+        // 复制页面 URL 的逻辑
+        const url = window.location.href;
+        navigator.clipboard.writeText(url).then(() => {
+            console.log('页面 URL 已复制到剪贴板');
+        }).catch((err) => {
+            console.error('复制页面 URL 失败: ', err);
+        });
+    }
+};
+
 var btf = {
-
-
-
     // 修改时间显示"最近"
     diffDateExact: function (d, more = false) {
         const dateNow = new Date();
