@@ -303,6 +303,9 @@
     }
 
 </script>
+<!-- 自定义底部html -->
+<th:block th:if="${not #strings.isEmpty(theme.config.codes.footer_html)}"
+th:utext="${theme.config.codes.footer_html}"> </th:block>
 </body>
 
 </html>

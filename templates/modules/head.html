@@ -26,6 +26,14 @@
         }
     </style>
 
+    <!-- 自定义css -->
+    <style type="text/css" th:if="${not #strings.isEmpty(theme.config.codes.code_css)}"
+    th:utext="${theme.config.codes.code_css}"></style>
+
+    <!-- 自定义js -->
+    <style type="text/css" th:if="${not #strings.isEmpty(theme.config.codes.code_js)}"
+    th:utext="${theme.config.codes.code_js}"></style>
+
     <!-- swiper 在瞬间滚动时会使用 -->
     <link th:if="${theme.config.top.moment}" rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/Swiper/8.0.6/swiper-bundle.min.css"/>
     
@@ -170,6 +178,10 @@
     <link rel="stylesheet" th:href="${assets_link + '/icon/iconfont.css' + theme_version}">
 
     <th:block th:replace="~{modules/variables/site-config}" />
+
+    <!-- 自定义头部html -->
+    <th:block th:if="${not #strings.isEmpty(theme.config.codes.head_html)}"
+              th:utext="${theme.config.codes.head_html}"> </th:block>
 
 
 </th:block>
