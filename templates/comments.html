@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'comments',title = ${singlePage.spec.title + ' | ' + site.title}, head = ~{::head})}">
+    th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'comments',title = ${singlePage.spec.title + ' | ' + site.title}, head = ~{::head})}">
 <th:block th:fragment="head">
     <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = ${singlePage.spec.title},
                 _permalink = ${singlePage.status.permalink},
@@ -20,9 +20,10 @@
         <main class="layout hide-aside" id="content-inner">
             <div id="page">
 
-                <th:block th:if="${theme.config.envelope_comment.enable_envelope_comment}">
+                <!-- 留言板信笺 -->
+                <th:block th:if="${theme.config.envelope_comment.envelope_comment_Style=='stationery'}">
                     <th:block th:if="${not #strings.isEmpty(theme.config.envelope_comment.title)}"
-                              th:utext="${theme.config.envelope_comment.title}">
+                        th:utext="${theme.config.envelope_comment.title}">
                     </th:block>
                     <style>
                         @media screen and (max-width: 600px) {
@@ -48,8 +49,8 @@
                             }
 
                             #form-wrap:hover {
-                                height: [[${theme.config.envelope_comment.height}]]px;
-                                top: -200px
+                                height: [[${theme.config.envelope_comment.stationery.height}]]px;
+                                top: -200px;
                             }
 
                             #beforeimg {
@@ -115,45 +116,127 @@
                         <div id="maincontent">
                             <div id="form-wrap">
                                 <img class="no-lightbox entered loaded" id="beforeimg"
-                                     th:src="@{${theme.config.envelope_comment.custom_pic.beforeimg}}">
+                                    th:src="@{${theme.config.envelope_comment.stationery.custom_pic.beforeimg}}">
                                 <div id="envelope">
                                     <form>
                                         <div class="formmain" style="pointer-events:none">
+
                                             <img class="headerimg no-lightbox entered loaded"
-                                                 th:src="@{${theme.config.envelope_comment.custom_pic.cover}}"
-                                                 style="width:100%;overflow:hidden;pointer-events:none">
+                                                th:src="@{${theme.config.envelope_comment.stationery.custom_pic.cover}}"
+                                                style="width:100%;overflow:hidden;pointer-events:none">
                                             <div class="comments-main">
                                                 <h3 class="title3"
                                                     style="text-decoration:none;color:var(--heo-theme);text-align:center">
                                                     来自[[${site.title}]]的留言:</h3>
                                                 <div class="comments"
-                                                     style="text-align:center;border-bottom:#ddd 1px solid;border-left:#ddd 1px solid;padding-bottom:20px;background-color:#eee;margin:15px 0;padding-left:20px;padding-right:20px;border-top:#ddd 1px solid;border-right:#ddd 1px solid;padding-top:20px"
-                                                     th:with="message = ${theme.config.envelope_comment.message_list}">
+                                                    style="text-align:center;border-bottom:#ddd 1px solid;border-left:#ddd 1px solid;padding-bottom:20px;background-color:#eee;margin:15px 0;padding-left:20px;padding-right:20px;border-top:#ddd 1px solid;border-right:#ddd 1px solid;padding-top:20px"
+                                                    th:with="message = ${theme.config.envelope_comment.stationery.message_list}">
 
                                                     <div th:each="data : ${message}">[[${data}]]</div>
 
                                                 </div>
                                                 <div class="bottomcontent" style="text-align:center;margin-top:40px">
                                                     <img class="bottomimg no-lightbox entered loaded"
-                                                         th:src="@{${theme.config.envelope_comment.custom_pic.line}}"
-                                                         style="width:100%;margin:5px auto 5px auto;display:block;pointer-events:none">
+                                                        th:src="@{${theme.config.envelope_comment.stationery.custom_pic.line}}"
+                                                        style="width:100%;margin:5px auto 5px auto;display:block;pointer-events:none">
                                                 </div>
                                                 <p class="bottomhr" style="font-size:12px;text-align:center;color:#999">
-                                                    [[${theme.config.envelope_comment.bottom}]]</p>
+                                                    [[${theme.config.envelope_comment.stationery.bottom}]]</p>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                                 <img id="afterimg" class="no-lightbox entered loaded"
-                                     th:src="@{${theme.config.envelope_comment.custom_pic.afterimg}}">
+                                    th:src="@{${theme.config.envelope_comment.stationery.custom_pic.afterimg}}">
                             </div>
                         </div>
                     </div>
 
                 </th:block>
 
+                <!-- 留言板诗词 -->
+                <th:block th:if="${theme.config.envelope_comment.envelope_comment_Style=='poetry'}">
+                    <th:block th:if="${not #strings.isEmpty(theme.config.envelope_comment.title)}"
+                        th:utext="${theme.config.envelope_comment.title}">
+                    </th:block>
+
+                    <style>
+                        #article-container {
+                            word-wrap: break-word;
+                            overflow-wrap: break-word;
+                        }
+
+                        .entry-content {
+                            position: relative;
+                        }
+
+                        .entry-content * {
+                            box-sizing: border-box;
+                        }
+
+                        .poem-wrap {
+                            position: relative;
+                            width: 70%;
+                            max-width: 80%;
+                            border: 2px solid #797979;
+                            border-top: 0;
+                            text-align: center;
+                            margin: 70px auto;
+                        }
+
+                        .poem-border {
+                            position: absolute;
+                            height: 2px;
+                            width: 27%;
+                            background-color: #797979;
+                        }
+
+                        .poem-left {
+                            left: 0;
+                        }
+
+                        .poem-right {
+                            right: 0;
+                        }
+
+                        .poem-wrap p#poem {
+                            font-size: 25px;
+                            text-align: center;
+                        }
+
+                        .poem-wrap p#info {
+                            font-size: 15px;
+                            margin: 15px auto !important;
+                            text-align: center;
+                        }
+                    </style>
+
+                    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+                    <div id="article-container">
+                        <div class="entry-content">
+                            <div class="poem-wrap">
+                                <div class="poem-border poem-left">
+                                </div>
+                                <div class="poem-border poem-right">
+                                </div>
+                                <h1>念两句诗</h1>
+                                <p id="poem"></p>
+                                <p id="info"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        jinrishici.load(function (result) {
+                            var sentence = document.querySelector("#poem")
+                            var info = document.querySelector("#info")
+                            sentence.innerHTML = result.data.content
+                            info.innerHTML = '【' + result.data.origin.dynasty + '】' + result.data.origin.author + '《' + result.data.origin.title + '》'
+                        });
+                    </script>
+                </th:block>
+
                 <div class="flink" id="article-container">
-                    <th:block  th:utext="${singlePage.content.content}"></th:block>
+                    <th:block th:utext="${singlePage.content.content}"></th:block>
                 </div>
 
                 <hr>
@@ -166,7 +249,7 @@
 
         </main>
         <!-- 底部 -->
-        <footer th:replace="~{modules/footer}"/>
+        <footer th:replace="~{modules/footer}" />
     </div>
 
 </th:block>
