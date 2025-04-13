@@ -211,7 +211,6 @@
                         }
                     </style>
 
-                    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
                     <div id="article-container">
                         <div class="entry-content">
                             <div class="poem-wrap">
@@ -225,13 +224,17 @@
                             </div>
                         </div>
                     </div>
-                    <script type="text/javascript">
-                        jinrishici.load(function (result) {
-                            var sentence = document.querySelector("#poem")
-                            var info = document.querySelector("#info")
-                            sentence.innerHTML = result.data.content
-                            info.innerHTML = '【' + result.data.origin.dynasty + '】' + result.data.origin.author + '《' + result.data.origin.title + '》'
-                        });
+                    <script data-pjax th:inline="javascript">
+                        async function getjinrishics() {
+                            jinrishici.load(function (result) {
+                                var sentence = document.querySelector("#poem")
+                                var info = document.querySelector("#info")
+                                sentence.innerHTML = result.data.content
+                                info.innerHTML = '【' + result.data.origin.dynasty + '】' + result.data.origin.author + '《' + result.data.origin.title + '》'
+                            });
+                        }
+                        getScript("https://sdk.jinrishici.com/v2/browser/jinrishici.js").then(getjinrishics)
+                        
                     </script>
                 </th:block>
 
