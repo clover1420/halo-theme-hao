@@ -173,29 +173,70 @@ spec:
                   value: true
                 - label: 隐藏
                   value: false
-            - $formkit: repeater
-              name: typed
+            - $formkit: group
               if: $get(enable_above).value
-              label: 打字机显示的文字
-              value: [ ]
-              children:
-                - $formkit: text
-                  name: text
-                  label: 自定义文字
-                  placeholder: 请输入自定义文字
-            - $formkit: radio
+              name: random_sentence
               label: 随机文字
-              if: $get(enable_above).value
-              name: enable_typed_random
-              key: enable_typed_random
-              id: enable_typed_random
-              value: false
               help: 如果配置了自定义文字，优先展示自定义文字
-              options:
-                - label: 启用
-                  value: true
-                - label: 禁用
+              value:
+                typed:
+                enable_typed_random:
+                random_sentence_type:
+              children:
+                - $formkit: repeater
+                  name: typed
+                  label: 打字机显示的文字
+                  value: [ ]
+                  children:
+                    - $formkit: text
+                      name: text
+                      label: 自定义文字
+                      placeholder: 请输入自定义文字
+                - $formkit: radio
+                  label: 随机文字
+                  name: enable_typed_random
+                  key: enable_typed_random
+                  id: enable_typed_random
                   value: false
+                  options:
+                    - label: 启用
+                      value: true
+                    - label: 禁用
+                      value: false
+                - $formkit: select
+                  if: $get(enable_typed_random).value
+                  name: random_sentence_type
+                  label: 随机文字类型
+                  id: random_sentence_type
+                  key: random_sentence_type
+                  value: ""
+                  options:
+                    - label: 全部
+                      value: ""
+                    - label: 动画
+                      value: a
+                    - label: 漫画
+                      value: b
+                    - label: 游戏
+                      value: c
+                    - label: 文学
+                      value: d
+                    - label: 原创
+                      value: e
+                    - label: 来自网络
+                      value: f
+                    - label: 其他
+                      value: g
+                    - label: 影视
+                      value: h
+                    - label: 诗词
+                      value: i
+                    - label: 网易云
+                      value: j
+                    - label: 哲学
+                      value: k
+                    - label: 抖机灵
+                      value: l
             - $formkit: radio
               if: $get(enable_above).value
               label: 背景模式
@@ -229,6 +270,7 @@ spec:
               label: 移动端背景图
               placeholder: 请填写移动端背景图地址
               value: https://imgapi.kouseki.cn/random?sort=mp
+        
         - $formkit: group
           name: global_background
           label: 全局背景设置
@@ -2107,19 +2149,18 @@ spec:
     - group: envelope_comment
       label: 留言板
       formSchema:
-        - $formkit: radio
-          label: 信笺
-          name: enable_envelope_comment
-          key: enable_envelope_comment
-          id: enable_envelope_comment
-          value: true
+        - $formkit: select
+          name: envelope_comment_Style
+          id: envelope_comment_Style
+          key: envelope_comment_Style
+          label: 样式
+          value: stationery
           options:
-            - label: 启用
-              value: true
-            - label: 禁用
-              value: false
+            - value: stationery
+              label: 信笺
+            - value: poetry
+              label: 诗词
         - $formkit: code
-          if: $get(enable_envelope_comment).value
           name: title
           label: 标题
           placeholder: 请输入内容
@@ -2128,48 +2169,59 @@ spec:
           language: html
           help: 支持 HTML 语法
         - $formkit: group
-          name: custom_pic
-          if: $get(enable_envelope_comment).value
-          label: 信笺图片
+          name: stationery
+          if: $get(envelope_comment_Style).value == 'stationery'
+          label: 信笺
           value:
-            cover:
-            line:
-            beforeimg:
-            afterimg:
+            custom_pic:
+            message_list:
+            bottom:
+            height:
           children:
-            - $formkit: attachment
-              name: cover
-              label: 头部图片
-              placeholder: 请输入内容
-              value: "https://npm.elemecdn.com/hexo-butterfly-envelope/lib/violet.jpg"
-            - $formkit: attachment
-              name: line
-              label: 底部图片
-              placeholder: 请输入内容
-              value: "https://npm.elemecdn.com/hexo-butterfly-envelope/lib/line.png"
-            - $formkit: attachment
-              name: beforeimg
-              label: 前半部分图片
-              placeholder: 请输入内容
-              value: "https://npm.elemecdn.com/hexo-butterfly-envelope/lib/before.png"
-            - $formkit: attachment
-              name: afterimg
-              label: 后半部分图片
-              placeholder: 请输入内容
-              value: "https://npm.elemecdn.com/hexo-butterfly-envelope/lib/after.png"
-        - $formkit: list
-          if: $get(enable_envelope_comment).value
-          name: message_list
-          label: 正文
-          addLabel: 添加标签
-          help: 选项是默认给的值
-          itemType: string
-          value:
-            - 有什么想问的？
-            - 有什么想说的？
-            - 有什么想吐槽的？
-            - 哪怕是有什么想吃的，都可以告诉我哦~
-          children:
+            - $formkit: group
+              name: custom_pic
+              label: 信笺图片
+              value:
+                cover:
+                line:
+                beforeimg:
+                afterimg:
+              children:
+                - $formkit: attachment
+                  name: cover
+                  label: 头部图片
+                  placeholder: 请输入内容
+                  value: "https://npm.elemecdn.com/hexo-butterfly-envelope/lib/violet.jpg"
+                - $formkit: attachment
+                  name: line
+                  label: 底部图片
+                  placeholder: 请输入内容
+                  value: "https://npm.elemecdn.com/hexo-butterfly-envelope/lib/line.png"
+                - $formkit: attachment
+                  name: beforeimg
+                  label: 前半部分图片
+                  placeholder: 请输入内容
+                  value: "https://npm.elemecdn.com/hexo-butterfly-envelope/lib/before.png"
+                - $formkit: attachment
+                  name: afterimg
+                  label: 后半部分图片
+                  placeholder: 请输入内容
+                  value: "https://npm.elemecdn.com/hexo-butterfly-envelope/lib/after.png"
+            - $formkit: list
+              name: message_list
+              label: 正文
+              addLabel: 添加标签
+              help: 选项是默认给的值
+              itemType: string
+              value:
+                - 有什么想问的？
+                - 有什么想说的？
+                - 有什么想吐槽的？
+                - 哪怕是有什么想吃的，都可以告诉我哦~
+              children:
+                - $formkit: text
+                  index: "$index"
+                  validation: required
             - $formkit: text
               index: "$index"
               validation: required
@@ -3552,3 +3604,27 @@ spec:
                   label: 结束时间
                   placeholder: 请输入结束时间(小时)
                   help: 可以与开始时间相同，表示一个小时内的问候
+
+    - group: codes
+      label: 代码注入
+      formSchema:
+        - $formkit: code
+          name: code_css
+          label: 自定义CSS代码
+          height: 200px
+          language: css
+        - $formkit: code
+          name: code_js
+          label: 自定义JavaScript代码
+          height: 200px
+          language: javascript
+        - $formkit: code
+          name: head_html
+          label: 自定义HTML代码-头部
+          height: 200px
+          language: html
+        - $formkit: code
+          name: footer_html
+          label: 自定义HTML代码-底部
+          height: 200px
+          language: html

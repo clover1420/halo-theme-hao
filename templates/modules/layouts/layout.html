@@ -77,23 +77,19 @@
     </style>
 </th:block>
 
-<script th:inline="javascript">
-    /*<![CDATA[*/
+<script th:inline="javascript"
+    th:with="allPostList=${postFinder.listAll()},
+    randomIndex=${T(java.lang.Math).floor(T(java.lang.Math).random()*#lists.size(allPostList))},
+    postPermalink=${allPostList[randomIndex].status.permalink}"
+>
     function toRandomPost() {
-        // 随机跳转首页的一篇文章
-        // 后续改成跳转全站的文章，可以从 sitemap 中获取所有文章
-        let posts = /*[[${posts}]]*/ {};
-        
-        let datum = posts.total < posts.size ? posts.total : posts.size;
-        
-        let number = Math.floor(Math.random() * datum);
-        
-        let post = posts.items[number];
+        // 随机跳转全站的一篇文章
+        let permalink = /*[[${postPermalink}]]*/ "/";
         
         // 当前窗口打开
-        //window.location.href = post.status.permalink;
-        pjax.loadUrl(post.status.permalink)
-        // window.open(post.status.permalink);
+        //window.location.href = permalink;
+        pjax.loadUrl(permalink);
+        // window.open(permalink);
     }
     /*]]>*/
 </script>
@@ -193,8 +189,11 @@
             src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/Swiper/6.6.2/swiper-bundle.min.js"></script>
     
     <!-- 右键菜单 -->
-    <script th:if="${theme.config.tool.rightMenu.rightMenuEnable}"
-            th:src="${assets_link + '/zhheo/rightmenu.js'}"></script>
+    <script>
+        // 是否开启右键菜单
+        window.isRightmenu = [[${theme.config.tool.rightMenu.rightMenuEnable}]];
+    </script>
+    <script th:src="${assets_link + '/zhheo/rightmenu.js' + theme_version}"></script>
     
     <!-- 评论弹幕 -->
     <script th:if="${ ( ( not #strings.isEmpty(theme.config.comments.twikoos.envId)  && not #strings.isEmpty(theme.config.comments.twikoos.accessToken) ) ||
@@ -313,7 +312,9 @@
     }
 
 </script>
-
+<!-- 自定义底部html -->
+<th:block th:if="${not #strings.isEmpty(theme.config.codes.footer_html)}"
+th:utext="${theme.config.codes.footer_html}"> </th:block>
 </body>
 
 </html>

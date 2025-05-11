@@ -1,7 +1,4 @@
 var btf = {
-
-
-
     // 修改时间显示"最近"
     diffDateExact: function (d, more = false) {
         const dateNow = new Date();
