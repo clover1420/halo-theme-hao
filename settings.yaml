@@ -2227,14 +2227,12 @@ spec:
               validation: required
         - $formkit: text
           name: bottom
-          if: $get(enable_envelope_comment).value
           label: 底部文本
           placeholder: 请输入内容
           value: 自动书记人偶竭诚为您服务！
           help: 仅支持单行文本
         - $formkit: number
           name: height
-          if: $get(enable_envelope_comment).value
           label: 高度
           placeholder: 请输入内容
           help: 信封划出的高度
