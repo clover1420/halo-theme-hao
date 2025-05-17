@@ -263,6 +263,7 @@ const friendLinkModal = {
 
 };
 
+friendLinkModal.init();
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function () {
   friendLinkModal.init();

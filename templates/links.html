@@ -42,15 +42,15 @@
                 
                 <!-- 引入友链申请弹窗组件 -->
                 <th:block th:replace="~{modules/friend-link-modal}"></th:block>
+                <!-- 友链申请弹窗脚本 -->
+                <script th:src="${assets_link + '/js/friend-link-modal.js' + theme_version}" data-pjax="" defer="" >
+                </script>
             </div>
         </main>
         <!-- 底部 -->
         <footer th:replace="~{modules/footer}"/>
     </div>
     
-    <!-- 友链申请弹窗脚本 -->
-    <script data-pjax th:src="${assets_link + '/js/friend-link-modal.js' + theme_version}">
-    </script>
 </th:block>
 
 </html>
