@@ -750,8 +750,8 @@ spec:
                       label: Steam卡片
                     - value: "music"
                       label: 音乐卡片
-                    - value: "friend-link"
-                      label: 通讯录
+                    - value: "visitors"
+                      label: 来访者
                     - value: "recent-posts"
                       label: 最新文章
                     - value: "visit-posts"
@@ -813,8 +813,8 @@ spec:
                       label: Steam卡片
                     - value: "music"
                       label: 音乐卡片
-                    - value: "friend-link"
-                      label: 通讯录
+                    - value: "visitors"
+                      label: 来访者
                     - value: "recent-posts"
                       label: 最新文章
                     - value: "visit-posts"
@@ -1145,6 +1145,35 @@ spec:
               name: username
               label: 赞助用户名
               help: carolcoral
+        - $formkit: group
+          name: Visitors
+          label: 来访者
+          value:
+            IsIndexShow: true
+            key: 1234567890
+            longitude: 104.4806
+            Latitude: 36.3055
+          children:
+            - $formkit: text
+              name: key
+              label: 访问者统计的key
+              help: 请前往https://api.nsmao.net/申请
+            - $formkit: text
+              name: longitude
+              label: 经度
+            - $formkit: text
+              name: Latitude
+              label: 纬度
+            - $formkit: radio
+              name: IsIndexShow
+              label: 是否只在首页显示
+              value: true
+              options:
+                - label: 是
+                  value: true
+                - label: 否
+                  value: false
+            
         - $formkit: group
           name: music
           label: 音乐卡片
