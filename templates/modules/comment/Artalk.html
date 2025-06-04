@@ -96,16 +96,16 @@
                 fetch("[(${theme.config.comments.artalks.server})]" + 'api/v2/conf')
                         .then(response => response.json())
                         .then(d => {
-                            artalkUrl = '/api/v2/stats/latest_comments'
+                            artalkUrl = 'api/v2/stats/latest_comments'
                         })
                         .catch(e => {
-                            artalkUrl = '/api/stat'
+                            artalkUrl = 'api/stat'
                         })
             }
             
             const getComment = () => {
                 const statheaderList = {
-                    method: 'POST',
+                    method: 'GET',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         'Origin': window.location.origin

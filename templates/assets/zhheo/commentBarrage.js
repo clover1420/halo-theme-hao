@@ -1,4 +1,4 @@
-if(GLOBAL_CONFIG.htmlType!='comments' && document.querySelector('#post-comment')) {
+if (GLOBAL_CONFIG.htmlType != 'comments' && document.querySelector('#post-comment')) {
 
     var commentBarrageConfig = {
         //同时最多显示弹幕数
@@ -35,7 +35,7 @@ if(GLOBAL_CONFIG.htmlType!='comments' && document.querySelector('#post-comment')
     function initCommentBarrage() {
         //console.log("开始创建热评")
 
-        if(commentBarrageConfig.use=='Twikoo'){
+        if (commentBarrageConfig.use == 'Twikoo') {
             var data = JSON.stringify({
                 "event": "COMMENT_GET",
                 "commentBarrageConfig.accessToken": commentBarrageConfig.accessToken,
@@ -54,37 +54,36 @@ if(GLOBAL_CONFIG.htmlType!='comments' && document.querySelector('#post-comment')
             xhr.send(data);
         }
 
-        if(commentBarrageConfig.use=='Artalk'){
-            var data ={
+        if (commentBarrageConfig.use == 'Artalk') {
+            var data = {
                 "site_name": commentBarrageConfig.siteName,
                 "page_key": commentBarrageConfig.pageUrl,
                 "limit": 100,
                 "offset": 0
             };
-            var xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
-            xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === 4) {
-                    commentBarrageConfig.barrageList = commentLinkFilter(JSON.parse(this.responseText).data.comments);
-                    commentBarrageConfig.dom.innerHTML = '';
-                }
-            });
+            
             const usp = new URLSearchParams(data)
             const query = usp.toString()
-            xhr.open("POST", commentBarrageConfig.artalkUrl+'api/get');
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.send(query);
-        }
 
-        if(commentBarrageConfig.use=='Waline'){
-            fetch( commentBarrageConfig.walineUrl+`/comment?path=${commentBarrageConfig.pageUrl}&pageSize=100&page=1&lang=zh-CN&sortBy=insertedAt_desc`)
-                .then((e=>e.json())).then((({data: t})=>{
-                    if(t.length>0){
+            fetch(commentBarrageConfig.artalkUrl + 'api/v2/comments?' + query)
+                .then((e => e.json())).then((({ comments: t }) => {
+                    if (t.length > 0) {
                         commentBarrageConfig.barrageList = commentLinkFilter(t);
                         commentBarrageConfig.dom.innerHTML = '';
                     }
                 }
-            ))
+                ))
+        }
+
+        if (commentBarrageConfig.use == 'Waline') {
+            fetch(commentBarrageConfig.walineUrl + `/comment?path=${commentBarrageConfig.pageUrl}&pageSize=100&page=1&lang=zh-CN&sortBy=insertedAt_desc`)
+                .then((e => e.json())).then((({ data: t }) => {
+                    if (t.length > 0) {
+                        commentBarrageConfig.barrageList = commentLinkFilter(t);
+                        commentBarrageConfig.dom.innerHTML = '';
+                    }
+                }
+                ))
         }
 
         clearInterval(commentInterval);
@@ -104,7 +103,7 @@ if(GLOBAL_CONFIG.htmlType!='comments' && document.querySelector('#post-comment')
 
     function commentLinkFilter(data) {
         let newData = [];
-        if(commentBarrageConfig.use=='Twikoo'){
+        if (commentBarrageConfig.use == 'Twikoo') {
             data.sort((a, b) => {
                 return a.created - b.created;
             })
@@ -112,7 +111,7 @@ if(GLOBAL_CONFIG.htmlType!='comments' && document.querySelector('#post-comment')
                 newData.push(...getCommentReplies(item));
             });
         }
-        if(commentBarrageConfig.use=='Artalk'){
+        if (commentBarrageConfig.use == 'Artalk') {
             data.sort((a, b) => {
                 const aCreated = Date.parse(a.date);
                 const bCreated = Date.parse(b.date);
@@ -122,7 +121,7 @@ if(GLOBAL_CONFIG.htmlType!='comments' && document.querySelector('#post-comment')
                 newData.push(item);
             });
         }
-        if(commentBarrageConfig.use=='Waline'){
+        if (commentBarrageConfig.use == 'Waline') {
             data.sort((a, b) => {
                 return a.time - b.time;
             })
@@ -157,18 +156,18 @@ if(GLOBAL_CONFIG.htmlType!='comments' && document.querySelector('#post-comment')
     }
 
     function popCommentBarrage(data) {
-        let isTwikoo = commentBarrageConfig.use=='Twikoo'
-        let isArtalk = commentBarrageConfig.use=='Artalk';
-        let isWaline = commentBarrageConfig.use=='Waline';
+        let isTwikoo = commentBarrageConfig.use == 'Twikoo'
+        let isArtalk = commentBarrageConfig.use == 'Artalk';
+        let isWaline = commentBarrageConfig.use == 'Waline';
         let nick = data.nick;
         let avatar = isTwikoo ? `https://cravatar.cn/avatar/${data.mailMd5}` :
-            isArtalk ?  `https://cravatar.cn/avatar/${data.email_encrypted}?d=mp&s=240` :
-                isWaline ? data.avatar :'https://cravatar.cn/avatar/';
+            isArtalk ? `https://cravatar.cn/avatar/${data.email_encrypted}?d=mp&s=240` :
+                isWaline ? data.avatar : 'https://cravatar.cn/avatar/';
         let barrageBlogger = isTwikoo ? data.mailMd5 === commentBarrageConfig.mailMd5 :
             isArtalk ? data.email_encrypted === commentBarrageConfig.mailMd5 :
-                isWaline ?  data.type === 'administrator' :false;
-        let id = isTwikoo ?  data.id :
-            isArtalk ?  'atk-comment-'+data.id  :
+                isWaline ? data.type === 'administrator' : false;
+        let id = isTwikoo ? data.id :
+            isArtalk ? 'atk-comment-' + data.id :
                 isWaline ? data.objectId : 'post-comment';
         let comment = isTwikoo ? data.comment :
             isArtalk ? data.content :
