@@ -70,7 +70,7 @@
 
                         <a class="img" target="_blank" th:href="${link.spec.url}" th:title="${link.spec.displayName}">
                             <img class="flink-avatar" style="pointer-events: none;" th:alt="${link.spec.displayName}"
-                                th:with="img = @{${#strings.isEmpty(#annotations.get(link, 'siteshot')) ? ('https://s0.wp.com/mshots/v1/' + link.spec.url + '?w=400&h=300') : #annotations.get(link,'siteshot') }}"
+                                th:with="img = @{${#strings.isEmpty(#annotations.get(link, 'siteshot')) ? ('https://s0.wp.com/mshots/v1/' + link.spec.url + '/?w=400&h=300') : #annotations.get(link,'siteshot') }}"
                                 th:src="${isLazyload ? loadingImg : img}" th:data-lazy-src="${ isLazyload ? img : ''}">
                         </a>
 

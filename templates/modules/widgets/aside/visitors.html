@@ -24,12 +24,38 @@
         };
 
         const getWelcomeInfoElement = () => document.querySelector('#welcome-info');
-
         const fetchIpData = async () => {
+            // https://apis.map.qq.com/ws/location/v1/ip?key=${txkey}&output=jsonp
             const response = await fetch(`https://api.nsmao.net/api/ip/query?key=${encodeURIComponent(IP_CONFIG.API_KEY)}`);
             if (!response.ok) throw new Error('网络响应不正常');
             return await response.json();
         };
+
+        // //  腾讯云api解析
+        // const showWelcome = ({
+        //     result
+        // }) => {
+        //     if (!result) return showErrorMessage();
+
+        //     const ip = result.ip
+        //     const lng = result.location.lng
+        //     const lat = result.location.lat
+        //     const country = result.ad_info.nation
+        //     const prov = result.ad_info.province
+        //     const city = result.ad_info.city
+        //     const district = result.ad_info.district
+
+        //     const welcomeInfo = getWelcomeInfoElement();
+        //     if (!welcomeInfo) return;
+
+        //     const dist = calculateDistance(lng, lat);
+        //     const ipDisplay = formatIpDisplay(ip);
+        //     const pos = formatLocation(country, prov, city, district);
+
+        //     welcomeInfo.style.display = 'block';
+        //     welcomeInfo.style.height = 'auto';
+        //     welcomeInfo.innerHTML = generateWelcomeMessage(pos, dist, ipDisplay, country, prov, city);
+        // };
 
         const showWelcome = ({
             data,
@@ -68,8 +94,8 @@
             return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
         };
         const formatIpDisplay = (ip) => ip.includes(":") ? "<br>好复杂，咱看不懂~(ipv6)" : ip;
-        const formatLocation = (country, prov, city) => {
-            return country ? (country === "中国" ? `${prov} ${city}` : country) : '神秘地区';
+        const formatLocation = (country, prov, city, district) => {
+            return country ? (country === "中国" ? `${prov} ${city} ${district}` : country) : '神秘地区';
         };
 
         const generateWelcomeMessage = (pos, dist, ipDisplay, country, prov, city) => `
