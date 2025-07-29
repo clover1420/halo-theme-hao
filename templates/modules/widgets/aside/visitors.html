@@ -68,14 +68,15 @@
                 lat,
                 country,
                 prov,
-                city
+                city,
+                district
             } = data;
             const welcomeInfo = getWelcomeInfoElement();
             if (!welcomeInfo) return;
 
             const dist = calculateDistance(lng, lat);
             const ipDisplay = formatIpDisplay(ip);
-            const pos = formatLocation(country, prov, city);
+            const pos = formatLocation(country, prov, city, district);
 
             welcomeInfo.style.display = 'block';
             welcomeInfo.style.height = 'auto';
