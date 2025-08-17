@@ -2069,6 +2069,11 @@ spec:
           height: 300px
           label: 底部显示内容
           language: html
+        - $formkit: text
+          name: fmomentsPageSize
+          label: 友链每页数量
+          help: "填写每页（滚动加载）展示的友链数量,"
+          value: 12
 
 
     - group: photos
@@ -2270,6 +2275,10 @@ spec:
     - group: about
       label: 关于
       formSchema:
+        - $formkit: attachment
+          name: aboutAuthorImage
+          label: 图片
+          value: https://liuzhihang.com/upload/recommend.png
         - $formkit: select
           name: widget_list
           multiple: true
@@ -2302,6 +2311,7 @@ spec:
               label: 关注偏好&音乐偏好
             - value: statistics-map
               label: 数据统计&作者相关信息
+
         - $formkit: list
           name: author_info_left_tags
           label: 个人标签-左

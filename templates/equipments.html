@@ -27,7 +27,7 @@
                     <th:block th:each="group : ${groups}">
                         <div class="equipment-item">
                             <h2 class="equipment-item-title">[[${group.spec.displayName}]]</h2>
-                            <div class="equipment-item-description">[[${#annotations.get(group, 'description')}]]</div>
+                            <div class="equipment-item-description">[[${group.spec.description}]]</div>
                             <div class="equipment-item-content" th:with="equipmentList = ${group.equipments}">
                                 <div class="equipment-item-content-item" th:each="equipment : ${equipmentList}">
                                     <div class="equipment-item-content-item-cover">
@@ -47,13 +47,7 @@
                                             [[${equipment.spec.description}]]
                                         </div>
                                         <div class="equipment-item-content-item-toolbar">
-                                            <a class="equipment-item-content-item-link" th:href="${equipment.spec.url}"
-                                               target="_blank">详情</a>
-                                            <a class="bber-reply" th:if="${theme.config.comments.use != 'commentWidget'}"
-                                               th:onclick="rightMenuCommentText([['&quot;'+${equipment.spec.displayName}+' '+${equipment.spec.specification}+' '+${equipment.spec.description}+'&quot;']]);"
-                                               data-pjax-state="">
-                                                <i class="haofont hao-icon-chat--fill" style="font-size: 22px;"></i>
-                                            </a>
+                                            <a class="equipment-item-content-item-link" th:href="${equipment.spec.url}" target="_blank">详情</a>
                                         </div>
                                     </div>
                                 </div>
@@ -61,12 +55,6 @@
                         </div>
                     </th:block>
                 </div>
-                <!--/* 评论组件 */-->
-                <th:block
-                        th:replace="~{modules/comment :: comment(group = 'content.halo.run',
-                  kind = 'SinglePage',
-                  name = 'equipment',
-                  allowComment = ${theme.config.comments.use != 'commentWidget'})}"/>
             </div>
         </main>
         <!-- 底部 -->
