@@ -68,18 +68,19 @@
                 lat,
                 country,
                 prov,
-                city
+                city,
+                district
             } = data;
             const welcomeInfo = getWelcomeInfoElement();
             if (!welcomeInfo) return;
 
             const dist = calculateDistance(lng, lat);
             const ipDisplay = formatIpDisplay(ip);
-            const pos = formatLocation(country, prov, city);
+            const pos = formatLocation(country, prov, city, district);
 
             welcomeInfo.style.display = 'block';
             welcomeInfo.style.height = 'auto';
-            welcomeInfo.innerHTML = generateWelcomeMessage(pos, dist, ipDisplay, country, prov, city);
+            welcomeInfo.innerHTML = generateWelcomeMessage(pos, dist, ipDisplay, country, prov, city, district);
         };
 
         const calculateDistance = (lng, lat) => {
@@ -98,7 +99,7 @@
             return country ? (country === "中国" ? `${prov} ${city} ${district}` : country) : '神秘地区';
         };
 
-        const generateWelcomeMessage = (pos, dist, ipDisplay, country, prov, city) => `
+        const generateWelcomeMessage = (pos, dist, ipDisplay, country, prov, city, district) => `
     欢迎来自 <b>${pos}</b> 的小友💖<br>
     你当前距博主约 <b>${dist}</b> 公里！<br>
     你的IP地址：<b class="ip-address">${ipDisplay}</b><br>
