@@ -19,7 +19,7 @@ postRandomImg=${#strings.contains(theme.config.layout.postRandomImg,'?') ? theme
                         <th:block th:if="${theme.config.layout.showPostCover}">
                             <img alt="cover" class="cover preimg"
                                  th:with="img = ${#strings.isEmpty(recommandPost.spec.cover) ? postRandomImg+recommandPost.spec.title : thumbnail.gen(recommandPost.spec.cover, 'm')}"
-                                 th:src="${isLazyload ? loadingImg : img}"
+                                 th:src="${isLazyload ? '' : img}"
                                  th:data-lazy-src="${ isLazyload ? img : ''}">
                         </th:block>
                         <div class="content is-center">
@@ -41,7 +41,7 @@ postRandomImg=${#strings.contains(theme.config.layout.postRandomImg,'?') ? theme
                         <th:block th:if="${theme.config.layout.showPostCover}">
                             <img class="cover" alt="cover"
                                  th:with="img = ${#strings.isEmpty(recommandPost.spec.cover) ? postRandomImg+recommandPost.spec.title : thumbnail.gen(recommandPost.spec.cover, 'm')}"
-                                 th:src="${isLazyload ? loadingImg : img}"
+                                 th:src="${isLazyload ? '' : img}"
                                  th:data-lazy-src="${ isLazyload ? img : ''}">
                         </th:block>
                         <div class="content is-center">
