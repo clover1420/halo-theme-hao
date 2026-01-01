@@ -186,7 +186,7 @@ const friendLinkModal = {
 
   // 获取友链分组信息
   getLinkGroups: function () {
-    fetch('/apis/api.link.submit.kunkunyu.com/v1alpha1/linkgroups', {
+    fetch('/apis/anonymous.link.submit.kunkunyu.com/v1alpha1/linkgroups', {
       method: 'GET'
     })
       .then(response => response.json())
@@ -196,9 +196,9 @@ const friendLinkModal = {
         if (optionList.length > 0) {
           optionList.forEach(function (item) {
             option += `<span class="Groups">
-                          <input type="radio" name="friend-menu" value="${item.groupId}"
-                              ${item.selected ? 'checked="checked"' : ''}>
-                          <span class="name">${item.groupName}</span>
+                          <input type="radio" name="friend-menu" value="${item.groupName}"
+                              ${item.displayName=="朋友们" ? 'checked="checked"' : ''}>
+                          <span class="name">${item.displayName}</span>
                       </span>`;
           });
         }
@@ -225,32 +225,33 @@ const friendLinkModal = {
     };
 
     // 提交到友链API
-    fetch('/apis/api.link.submit.kunkunyu.com/v1alpha1/linksubmits/-/submit', {
+    fetch('/apis/anonymous.link.submit.kunkunyu.com/v1alpha1/linksubmits/-/submit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        spec: {
-          displayName: formData.name,
-          url: formData.url,
-          logo: formData.avatar,
-          email: formData.email,
-          description: formData.desc,
-          groupName:  this.getGroupName(),
-          rssUrl: ""
-        }
+        type: "add",
+        displayName: formData.name,
+        url: formData.url,
+        logo: formData.avatar,
+        email: formData.email,
+        description: formData.desc,
+        updateDescription: "",
+        groupName:  this.getGroupName(),
+        rssUrl: ""
       })
     })
       .then(response => response.json())
       .then(data => {
-        if (data.code == 200) {
+        if (data.spec != undefined) {
           this.hide();
           btf.snackbarShow('友链申请已提交成功！', false, 3000);
 
         } else {
+          console.log(data.code);
           console.log(data);
-          const msg = '友链申请提交失败！' + data.msg
+          const msg = '友链申请提交失败！' + data.detail
           btf.snackbarShow(msg, false, 3000);
         }
       })
@@ -263,10 +264,7 @@ const friendLinkModal = {
 
 };
 
-// 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', function () {
-  friendLinkModal.init();
-});
+friendLinkModal.init();
 
 // 支持PJAX
 document.addEventListener('pjax:complete', function () {
